@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Проверяем форматирование кода
+npm run format:check
+
+# Проверяем линтинг
+npm run lint
+
+# Собираем билд
+npm run build 
