@@ -1,5 +1,6 @@
-import './App.css'
 import { RootPage } from '@pages'
+
+import './App.css'
 
 function App() {
     return <RootPage />

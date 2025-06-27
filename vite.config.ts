@@ -15,4 +15,8 @@ export default defineConfig({
             '@shared': '/src/shared',
         },
     },
+    server: {
+        host: 'localhost',
+        port: 3000,
+    },
 })
