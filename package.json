@@ -8,9 +8,10 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "format": "prettier --write .",
-        "format:check": "prettier --check .",
-        "prepare": "husky"
+        "format": "prettier --write ./src",
+        "prepare": "husky install",
+        "tsc-files": "tsc --project tsconfig.app.json",
+        "check-build": "tsc --noEmit && tsc -b"
     },
     "dependencies": {
         "react": "^19.1.0",
@@ -30,5 +31,13 @@
         "typescript": "~5.8.3",
         "typescript-eslint": "^8.34.1",
         "vite": "^7.0.0"
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "prettier --write"
+        ],
+        "*.{js,jsx,json,css,md}": [
+            "prettier --write"
+        ]
     }
 }
