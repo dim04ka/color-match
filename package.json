@@ -1,5 +1,6 @@
 {
     "name": "color-match",
+    "description": "Color Match - увлекательная игра-головоломка с выделением блоков",
     "private": true,
     "version": "0.0.0",
     "type": "module",
