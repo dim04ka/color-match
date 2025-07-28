@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import type { BlockType, Color } from '@shared/types/game'
 
@@ -30,39 +30,6 @@ const colorMap: Record<Color, string> = {
     green: '#27ae60',
     purple: '#9b59b6',
 }
-
-// Анимация падения блока сверху
-const dropIn = keyframes`
-    0% {
-        transform: translateY(-100px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-`
-
-// Анимация взрыва
-const explode = keyframes`
-    0% {
-        transform: scale(1);
-        opacity: 1;
-        background-color: inherit;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 0.8;
-        background-color: #ff6b35;
-        box-shadow: 0 0 30px #ff6b35, 0 0 60px #ff6b35;
-    }
-    100% {
-        transform: scale(2);
-        opacity: 0;
-        background-color: #ffed4e;
-        box-shadow: 0 0 40px #ffed4e, 0 0 80px #ffed4e;
-    }
-`
 
 const StyledBlock = styled.div<StyledBlockProps>`
     width: 50px;
@@ -106,60 +73,81 @@ const StyledBlock = styled.div<StyledBlockProps>`
         return '0 2px 4px rgba(0, 0, 0, 0.1)'
     }};
 
-    /* Увеличиваем размер на мобильных для лучшего touch-взаимодействия */
+    /* Адаптивные размеры блоков */
     @media (max-width: 768px) {
-        width: 60px;
-        height: 60px;
-        border-radius: 10px;
+        width: 45px;
+        height: 45px;
+        border-radius: 6px;
     }
 
-    /* Анимация падения для новых блоков */
+    @media (max-width: 480px) {
+        width: 38px;
+        height: 38px;
+        border-radius: 5px;
+        border-width: 1.5px;
+    }
+
+    @media (max-width: 360px) {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        border-width: 1px;
+    }
+
+    /* Анимация появления новых блоков и падения существующих */
     ${({ $isNew, $animationDelay }) =>
         $isNew &&
         css`
-            animation: ${dropIn} 0.5s ease-out;
-            animation-delay: ${$animationDelay}s;
-            animation-fill-mode: both;
-        `}
+            animation: ${$animationDelay === 0.05
+                    ? 'dropDown'
+                    : 'dropIn'}
+                0.4s ease-out forwards;
+            animation-delay: ${$animationDelay === 0.05
+                ? '0s'
+                : `${$animationDelay}s`};
+            transform: ${$animationDelay === 0.05
+                ? 'translateY(-20px)'
+                : 'translateY(-100px)'};
+            opacity: ${$animationDelay === 0.05 ? '1' : '0'};
 
-    /* Анимация взрыва с задержкой для цепных реакций */
-    ${({ $isExploding, $explosionDelay }) =>
-        $isExploding &&
-        css`
-            animation: ${explode} 0.8s ease-out forwards;
-            animation-delay: ${$explosionDelay}s;
-            z-index: 10;
-        `}
+            @keyframes dropIn {
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
 
-    /* Иконки специальных блоков */
-    ${({ $hasBomb, $hasHorizontalStripe, $hasVerticalStripe }) =>
-        ($hasBomb || $hasHorizontalStripe || $hasVerticalStripe) &&
-        css`
-            &::before {
-                content: ${$hasBomb
-                    ? "'💣'"
-                    : $hasHorizontalStripe
-                      ? "'⬅️➡️'"
-                      : $hasVerticalStripe
-                        ? "'⬆️⬇️'"
-                        : "''"};
-                position: absolute;
-                top: 2px;
-                right: 2px;
-                font-size: ${$hasBomb ? '12px' : '10px'};
-                z-index: 5;
-                text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-
-                /* Увеличиваем иконки на мобильных */
-                @media (max-width: 768px) {
-                    font-size: ${$hasBomb ? '14px' : '12px'};
-                    top: 3px;
-                    right: 3px;
+            @keyframes dropDown {
+                to {
+                    transform: translateY(0);
                 }
             }
         `}
 
-    /* Выделенные блоки со специальными эффектами */
+    /* Анимация взрыва */
+    ${({ $isExploding, $explosionDelay }) =>
+        $isExploding &&
+        css`
+            animation: explode 0.8s ease-out forwards;
+            animation-delay: ${$explosionDelay}s;
+
+            @keyframes explode {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.3);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+            }
+        `}
+
+    /* Стили для специальных блоков при выделении */
     ${({ $isSelected, $hasBomb }) =>
         $isSelected &&
         $hasBomb &&
@@ -202,6 +190,69 @@ const StyledBlock = styled.div<StyledBlockProps>`
     &:active {
         transform: ${({ $isExploding }) =>
             $isExploding ? 'none' : 'scale(0.95)'};
+    }
+
+    /* Иконки специальных блоков */
+    ${({ $hasBomb, $hasHorizontalStripe, $hasVerticalStripe }) =>
+        ($hasBomb || $hasHorizontalStripe || $hasVerticalStripe) &&
+        css`
+            &::before {
+                content: ${$hasBomb
+                    ? "'💣'"
+                    : $hasHorizontalStripe
+                      ? "'⬅️➡️'"
+                      : $hasVerticalStripe
+                        ? "'⬆️⬇️'"
+                        : "''"};
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                font-size: ${$hasBomb ? '12px' : '10px'};
+                z-index: 5;
+                text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+
+                /* Адаптивные размеры иконок */
+                @media (max-width: 768px) {
+                    font-size: ${$hasBomb ? '11px' : '9px'};
+                    top: 2px;
+                    right: 2px;
+                }
+
+                @media (max-width: 480px) {
+                    font-size: ${$hasBomb ? '10px' : '8px'};
+                    top: 1px;
+                    right: 1px;
+                }
+
+                @media (max-width: 360px) {
+                    font-size: ${$hasBomb ? '9px' : '7px'};
+                    top: 1px;
+                    right: 1px;
+                }
+            }
+        `}
+
+    /* Убираем hover эффекты на мобильных touch устройствах */
+    @media (hover: none) and (pointer: coarse) {
+        &:hover {
+            transform: none;
+            box-shadow: ${({
+                $isSelected,
+                $hasBomb,
+                $hasHorizontalStripe,
+                $hasVerticalStripe,
+            }) => {
+                if ($isSelected)
+                    return '0 0 15px rgba(255, 255, 255, 0.8)'
+                if ($hasBomb)
+                    return '0 0 10px rgba(255, 107, 53, 0.3), inset 0 0 10px rgba(255, 107, 53, 0.1)'
+                if ($hasHorizontalStripe)
+                    return '0 0 10px rgba(0, 184, 148, 0.3), inset 0 0 10px rgba(0, 184, 148, 0.1)'
+                if ($hasVerticalStripe)
+                    return '0 0 10px rgba(9, 132, 227, 0.3), inset 0 0 10px rgba(9, 132, 227, 0.1)'
+                return '0 2px 4px rgba(0, 0, 0, 0.1)'
+            }};
+        }
     }
 `
 

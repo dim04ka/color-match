@@ -28,11 +28,25 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
+    overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
 }
 
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
+}
+
+/* Адаптивные заголовки для мобильных */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.4em;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2em;
+    }
 }
 
 button {
@@ -45,13 +59,27 @@ button {
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
+    /* Увеличиваем размер touch-target для мобильных */
+    min-height: 44px;
+    min-width: 44px;
 }
+
 button:hover {
     border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Улучшаем touch взаимодействие на мобильных */
+@media (max-width: 768px) {
+    button {
+        padding: 0.8em 1.4em;
+        font-size: 1.1em;
+        min-height: 48px;
+        min-width: 48px;
+    }
 }
 
 @media (prefers-color-scheme: light) {

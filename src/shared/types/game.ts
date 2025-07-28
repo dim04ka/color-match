@@ -31,3 +31,10 @@ export type Position = {
 }
 
 export type ScoreMultipliers = Record<Color, number>
+
+export type Language = 'ru' | 'en'
+
+export type AppSettings = {
+    language: Language
+    soundEnabled: boolean
+}

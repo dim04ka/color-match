@@ -32,11 +32,29 @@ const StyledGrid = styled.div<StyledGridProps>`
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     user-select: none;
     touch-action: none; /* Предотвращаем скролл на touch устройствах */
+    max-width: 100%;
+    width: fit-content;
+    margin: 0 auto;
 
-    /* Увеличиваем размер на мобильных для лучшего touch-взаимодействия */
+    /* Адаптивная сетка для разных размеров экрана */
     @media (max-width: 768px) {
-        gap: 6px;
-        padding: 20px;
+        gap: 3px;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    @media (max-width: 480px) {
+        gap: 2px;
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 360px) {
+        gap: 1px;
+        padding: 6px;
+        border-radius: 6px;
     }
 `
 
@@ -44,6 +62,17 @@ const StyledGridContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    min-height: 0; /* Позволяет сетке сжиматься */
+
+    /* Обеспечиваем отзывчивое поведение */
+    @media (max-width: 768px) {
+        padding: 0 8px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0 4px;
+    }
 `
 
 export const GameGrid = ({

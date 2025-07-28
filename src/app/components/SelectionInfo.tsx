@@ -22,6 +22,29 @@ const StyledContainer = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 12px;
+
+    /* Адаптивный контейнер */
+    @media (max-width: 768px) {
+        padding: 14px;
+        margin-top: 16px;
+        border-radius: 10px;
+        min-height: 55px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 12px;
+        margin-top: 12px;
+        border-radius: 8px;
+        min-height: 50px;
+        gap: 10px;
+    }
+
+    @media (max-width: 360px) {
+        padding: 10px;
+        margin-top: 10px;
+        min-height: 45px;
+        gap: 8px;
+    }
 `
 
 const StyledInfo = styled.div<{ $visible: boolean }>`
@@ -32,6 +55,23 @@ const StyledInfo = styled.div<{ $visible: boolean }>`
     font-weight: bold;
     opacity: ${({ $visible }) => ($visible ? 1 : 0.5)};
     transition: opacity 0.2s ease;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    /* Адаптивное расположение информации */
+    @media (max-width: 768px) {
+        gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 8px;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    @media (max-width: 360px) {
+        gap: 6px;
+    }
 `
 
 const StyledBadge = styled.div<{
@@ -44,6 +84,30 @@ const StyledBadge = styled.div<{
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;
+    white-space: nowrap;
+
+    /* Адаптивные бейджи */
+    @media (max-width: 768px) {
+        padding: 7px 10px;
+        font-size: 13px;
+        gap: 5px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 8px;
+        font-size: 12px;
+        gap: 4px;
+        flex: 1;
+        justify-content: center;
+        border-radius: 16px;
+    }
+
+    @media (max-width: 360px) {
+        padding: 5px 6px;
+        font-size: 11px;
+        gap: 3px;
+        border-radius: 12px;
+    }
 
     ${({ $variant }) => {
         switch ($variant) {
@@ -69,6 +133,12 @@ const StyledBadge = styled.div<{
 const StyledButtons = styled.div`
     display: flex;
     gap: 12px;
+
+    /* Адаптивные кнопки */
+    @media (max-width: 480px) {
+        gap: 8px;
+        width: 100%;
+    }
 `
 
 const StyledButton = styled.button<{
@@ -83,6 +153,29 @@ const StyledButton = styled.button<{
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    min-height: 36px;
+
+    /* Адаптивные кнопки */
+    @media (max-width: 768px) {
+        padding: 9px 18px;
+        font-size: 14px;
+        min-height: 40px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px 14px;
+        font-size: 13px;
+        min-height: 36px;
+        flex: 1;
+        letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 360px) {
+        padding: 6px 10px;
+        font-size: 12px;
+        min-height: 32px;
+        letter-spacing: 0.2px;
+    }
 
     ${({ $variant }) =>
         $variant === 'confirm'
@@ -107,6 +200,14 @@ const StyledButton = styled.button<{
 
     &:active {
         transform: translateY(0);
+    }
+
+    /* Убираем hover эффекты на мобильных touch устройствах */
+    @media (hover: none) and (pointer: coarse) {
+        &:hover {
+            transform: none;
+            box-shadow: none;
+        }
     }
 `
 

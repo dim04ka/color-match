@@ -162,14 +162,12 @@ export const removeBlocksAndDrop = (
     for (let col = 0; col < gridSize; col++) {
         const column: BlockType[] = []
 
-        // Собираем оставшиеся блоки в колонне
+        // Собираем оставшиеся блоки в колонне с их исходными позициями
         for (let row = gridSize - 1; row >= 0; row--) {
             const block = newGrid[row][col]
             if (!removePositions.has(`${row}-${col}`)) {
                 column.push({
                     ...block,
-                    isNew: false,
-                    animationDelay: 0,
                     isExploding: false,
                     explosionDelay: 0,
                 })
@@ -181,10 +179,19 @@ export const removeBlocksAndDrop = (
             if (row >= gridSize - column.length) {
                 const blockIndex = gridSize - 1 - row
                 const existingBlock = column[blockIndex]
+                const oldRow = existingBlock.row
+                const newRow = row
+
+                // Проверяем, упал ли блок (изменилась ли позиция)
+                const hasFallen = newRow > oldRow
+
                 newGrid[row][col] = {
                     ...existingBlock,
-                    row,
+                    row: newRow,
                     col,
+                    // Добавляем анимацию падения только если блок упал
+                    isNew: hasFallen,
+                    animationDelay: hasFallen ? 0.05 : 0, // фиксированная небольшая задержка для падающих блоков
                 }
             } else {
                 // Создаём новые блоки сверху с анимацией
