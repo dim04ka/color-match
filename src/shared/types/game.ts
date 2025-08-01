@@ -52,6 +52,12 @@ export type PvPGameState = GameState & {
     winner?: 1 | 2
     turnTimeLeft: number // секунды, оставшиеся до конца хода
     turnDuration: number // длительность хода в секундах (по умолчанию 60)
+    lastDamage?: { [playerId: number]: PlayerDamageInfo } // информация о последнем нанесенном уроне
+}
+
+export type PlayerDamageInfo = {
+    damage: number
+    timestamp: number
 }
 
 export type PvPAIGameState = GameState & {
@@ -64,7 +70,9 @@ export type PvPAIGameState = GameState & {
     turnDuration: number
     isAIThinking: boolean // показывает, что ИИ обдумывает ход
     isAISelecting: boolean // показывает, что ИИ демонстрирует свой выбор
+    isProcessingMove: boolean // показывает, что идет обработка хода (анимации)
     aiThinkingTime: number // время размышления ИИ в миллисекундах
+    lastDamage?: { [playerId: number]: PlayerDamageInfo } // информация о последнем нанесенном уроне
 }
 
 export type AppSettings = {

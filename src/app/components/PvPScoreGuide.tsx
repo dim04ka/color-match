@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useAppContext } from '@app/contexts/AppContext'
-import type { Color, PlayerInfo } from '@shared/types/game'
+import type {
+    Color,
+    PlayerDamageInfo,
+    PlayerInfo,
+} from '@shared/types/game'
 import { SCORE_MULTIPLIERS } from '@shared/utils/gameUtils'
 import { getTranslation } from '@shared/utils/translations'
 
@@ -94,6 +98,7 @@ const StyledPlayerCard = styled.div<{ $isActive: boolean }>`
 
 const StyledPlayerIcon = styled.div`
     font-size: 1.5rem;
+    position: relative;
 
     @media (max-width: 768px) {
         font-size: 1.3rem;
@@ -101,6 +106,69 @@ const StyledPlayerIcon = styled.div`
 
     @media (max-width: 480px) {
         font-size: 1.2rem;
+    }
+`
+
+const StyledDamageIndicator = styled.div`
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border-radius: 50%;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    animation:
+        damageAppear 0.6s ease-out forwards,
+        damageDisappear 0.3s ease-in 2.7s forwards;
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.4);
+    z-index: 10;
+
+    @keyframes damageAppear {
+        0% {
+            transform: scale(0) translateY(10px);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.2) translateY(-5px);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes damageDisappear {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        min-width: 20px;
+        height: 20px;
+        font-size: 0.6rem;
+        top: -6px;
+        right: -10px;
+    }
+
+    @media (max-width: 480px) {
+        min-width: 18px;
+        height: 18px;
+        font-size: 0.55rem;
+        top: -5px;
+        right: -8px;
     }
 `
 
@@ -464,6 +532,7 @@ type PvPScoreGuideProps = {
     currentPlayer: 1 | 2
     turnTimeLeft: number
     onReset: () => void
+    lastDamage?: { [playerId: number]: PlayerDamageInfo }
 }
 
 export const PvPScoreGuide: React.FC<PvPScoreGuideProps> = ({
@@ -471,9 +540,35 @@ export const PvPScoreGuide: React.FC<PvPScoreGuideProps> = ({
     currentPlayer,
     turnTimeLeft,
     onReset,
+    lastDamage,
 }) => {
     const { settings } = useAppContext()
+    const [, forceUpdate] = useState({})
     const colorOrder: Color[] = ['blue', 'red', 'green', 'purple']
+
+    // Принудительно обновляем компонент для скрытия индикаторов урона
+    useEffect(() => {
+        if (!lastDamage) return
+
+        const timeouts = Object.values(lastDamage)
+            .map((damage) => {
+                const timeRemaining =
+                    3000 - (Date.now() - damage.timestamp)
+                if (timeRemaining > 0) {
+                    return setTimeout(() => {
+                        forceUpdate({})
+                    }, timeRemaining)
+                }
+                return null
+            })
+            .filter(Boolean)
+
+        return () => {
+            timeouts.forEach((timeout) => {
+                if (timeout) clearTimeout(timeout)
+            })
+        }
+    }, [lastDamage])
     const rarityLabels = {
         blue: 'Частый',
         red: 'Средний',
@@ -510,6 +605,12 @@ export const PvPScoreGuide: React.FC<PvPScoreGuideProps> = ({
                         const hpPercentage =
                             (player.hp / player.maxHp) * 100
 
+                        // Проверяем есть ли урон для показа
+                        const playerDamage = lastDamage?.[player.id]
+                        const shouldShowDamage =
+                            playerDamage &&
+                            Date.now() - playerDamage.timestamp < 3000 // показываем 3 секунды
+
                         return (
                             <StyledPlayerCard
                                 key={player.id}
@@ -517,6 +618,11 @@ export const PvPScoreGuide: React.FC<PvPScoreGuideProps> = ({
                             >
                                 <StyledPlayerIcon>
                                     {player.icon}
+                                    {shouldShowDamage && (
+                                        <StyledDamageIndicator>
+                                            -{playerDamage.damage}
+                                        </StyledDamageIndicator>
+                                    )}
                                 </StyledPlayerIcon>
                                 <StyledPlayerInfo>
                                     <StyledPlayerName>

@@ -226,6 +226,7 @@ export const PvPColorMatchGame = () => {
                 currentPlayer={gameState.currentPlayer}
                 turnTimeLeft={gameState.turnTimeLeft}
                 onReset={resetGame}
+                lastDamage={gameState.lastDamage}
             />
 
             <GameGrid

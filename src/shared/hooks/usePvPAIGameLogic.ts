@@ -23,7 +23,7 @@ const createInitialPlayers = (): [PlayerInfo, PlayerInfo] => [
     {
         id: 2,
         name: 'AI',
-        hp: 200,
+        hp: 20,
         maxHp: 200,
         icon: '🤖',
     },
@@ -52,6 +52,7 @@ export const usePvPAIGameLogic = (gridSize: number = 8) => {
         turnDuration: 60,
         isAIThinking: false,
         isAISelecting: false,
+        isProcessingMove: false,
         aiThinkingTime: 2500, // 2.5 секунды размышлений
     })
 
@@ -89,6 +90,13 @@ export const usePvPAIGameLogic = (gridSize: number = 8) => {
                 players: newPlayers,
                 gameOver: isGameOver,
                 winner: isGameOver ? prev.currentPlayer : undefined,
+                lastDamage: {
+                    ...prev.lastDamage,
+                    [opponentId]: {
+                        damage: score,
+                        timestamp: Date.now(),
+                    },
+                },
             }
         })
     }, [])
@@ -311,7 +319,11 @@ export const usePvPAIGameLogic = (gridSize: number = 8) => {
 
     // Обработка хода ИИ
     const handleAITurn = useCallback(() => {
-        if (gameState.currentPlayer === 2 && !gameState.gameOver) {
+        if (
+            gameState.currentPlayer === 2 &&
+            !gameState.gameOver &&
+            !gameState.isProcessingMove
+        ) {
             setPvpState((prev) => ({ ...prev, isAIThinking: true }))
 
             clearAITimer()
@@ -322,6 +334,7 @@ export const usePvPAIGameLogic = (gridSize: number = 8) => {
     }, [
         gameState.currentPlayer,
         gameState.gameOver,
+        gameState.isProcessingMove,
         gameState.aiThinkingTime,
         makeAIMove,
         clearAITimer,
@@ -373,6 +386,7 @@ export const usePvPAIGameLogic = (gridSize: number = 8) => {
             turnDuration: 60,
             isAIThinking: false,
             isAISelecting: false,
+            isProcessingMove: false,
             aiThinkingTime: 2500,
         })
     }, [baseGameLogic, clearTurnTimer, clearAITimer])

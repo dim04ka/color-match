@@ -74,6 +74,13 @@ export const usePvPGameLogic = (gridSize: number = 8) => {
                 players: newPlayers,
                 gameOver: isGameOver,
                 winner: isGameOver ? prev.currentPlayer : undefined,
+                lastDamage: {
+                    ...prev.lastDamage,
+                    [opponentId]: {
+                        damage: score,
+                        timestamp: Date.now(),
+                    },
+                },
             }
         })
     }, [])

@@ -223,6 +223,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
                 gameState.currentPlayer !== 1 ||
                 gameState.isAIThinking ||
                 gameState.isAISelecting ||
+                gameState.isProcessingMove ||
                 gameState.gameOver
             )
                 return
@@ -233,6 +234,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
             gameState.currentPlayer,
             gameState.isAIThinking,
             gameState.isAISelecting,
+            gameState.isProcessingMove,
             gameState.gameOver,
         ]
     )
@@ -243,6 +245,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
                 gameState.currentPlayer !== 1 ||
                 gameState.isAIThinking ||
                 gameState.isAISelecting ||
+                gameState.isProcessingMove ||
                 gameState.gameOver ||
                 !gameState.isDragging
             )
@@ -254,6 +257,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
             gameState.currentPlayer,
             gameState.isAIThinking,
             gameState.isAISelecting,
+            gameState.isProcessingMove,
             gameState.gameOver,
             gameState.isDragging,
         ]
@@ -264,6 +268,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
             gameState.currentPlayer !== 1 ||
             gameState.isAIThinking ||
             gameState.isAISelecting ||
+            gameState.isProcessingMove ||
             gameState.gameOver ||
             !gameState.isDragging
         )
@@ -274,6 +279,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
         gameState.currentPlayer,
         gameState.isAIThinking,
         gameState.isAISelecting,
+        gameState.isProcessingMove,
         gameState.gameOver,
         gameState.isDragging,
     ])
@@ -283,6 +289,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
             gameState.currentPlayer !== 1 ||
             gameState.isAIThinking ||
             gameState.isAISelecting ||
+            gameState.isProcessingMove ||
             gameState.gameOver ||
             !gameState.isDragging
         )
@@ -293,6 +300,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
         gameState.currentPlayer,
         gameState.isAIThinking,
         gameState.isAISelecting,
+        gameState.isProcessingMove,
         gameState.gameOver,
         gameState.isDragging,
     ])
@@ -301,7 +309,8 @@ export const PvPAIColorMatchGame: React.FC = () => {
         if (
             gameState.currentPlayer !== 1 ||
             gameState.isAIThinking ||
-            gameState.isAISelecting
+            gameState.isAISelecting ||
+            gameState.isProcessingMove
         )
             return
         confirmSelection()
@@ -315,6 +324,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
         gameState.currentPlayer,
         gameState.isAIThinking,
         gameState.isAISelecting,
+        gameState.isProcessingMove,
     ])
 
     // Звуковые эффекты для игровых событий
@@ -338,6 +348,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
                 currentPlayer={gameState.currentPlayer}
                 turnTimeLeft={gameState.turnTimeLeft}
                 onReset={resetGame}
+                lastDamage={gameState.lastDamage}
             />
 
             {(gameState.isAIThinking || gameState.isAISelecting) && (
@@ -360,7 +371,8 @@ export const PvPAIColorMatchGame: React.FC = () => {
             {gameState.pendingConfirmation &&
                 gameState.currentPlayer === 1 &&
                 !gameState.isAIThinking &&
-                !gameState.isAISelecting && (
+                !gameState.isAISelecting &&
+                !gameState.isProcessingMove && (
                     <StyledAttackButton
                         onClick={handleConfirmSelection}
                     >
@@ -368,7 +380,7 @@ export const PvPAIColorMatchGame: React.FC = () => {
                     </StyledAttackButton>
                 )}
 
-            {gameState.gameOver && (
+            {gameState.gameOver && !gameState.isProcessingMove && (
                 <StyledGameOverOverlay>
                     <StyledGameOverCard>
                         <StyledGameOverTitle>
