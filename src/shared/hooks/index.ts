@@ -1,4 +1,5 @@
 export { useAppSettings } from './useAppSettings'
 export { useGameLogic } from './useGameLogic'
 export { usePvPGameLogic } from './usePvPGameLogic'
+export { usePvPAIGameLogic } from './usePvPAIGameLogic'
 export { useSoundEffect } from './useSoundEffect'

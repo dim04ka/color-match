@@ -7,6 +7,7 @@ type TranslationKeys = {
     gameDescription: string
     startGame: string
     pvpMode: string
+    aiMode: string
     singleplayer: string
     settings: string
 
@@ -16,6 +17,7 @@ type TranslationKeys = {
     cancel: string
     resetGame: string
     backToMenu: string
+    attack: string
 
     // PvP
     player1: string
@@ -24,6 +26,9 @@ type TranslationKeys = {
     gameOver: string
     winner: string
     hp: string
+    youWin: string
+    aiWins: string
+    playAgain: string
 
     // Settings
     settingsTitle: string
@@ -47,6 +52,7 @@ const translations: Record<Language, TranslationKeys> = {
             'Выделяйте группы одинаковых цветов и создавайте цепные реакции! Чем больше блоков выберете, тем больше очков получите.',
         startGame: 'Одиночная игра',
         pvpMode: 'Игрок против игрока',
+        aiMode: 'Против компьютера',
         singleplayer: 'Одиночная игра',
         settings: 'Настройки',
 
@@ -56,6 +62,7 @@ const translations: Record<Language, TranslationKeys> = {
         cancel: 'Отмена',
         resetGame: 'Сбросить игру',
         backToMenu: 'В меню',
+        attack: 'Атака',
 
         // PvP
         player1: 'Игрок 1',
@@ -64,6 +71,9 @@ const translations: Record<Language, TranslationKeys> = {
         gameOver: 'Игра окончена',
         winner: 'Победитель',
         hp: 'HP',
+        youWin: 'Вы победили!',
+        aiWins: 'Компьютер победил!',
+        playAgain: 'Играть снова',
 
         // Settings
         settingsTitle: 'Настройки',
@@ -85,6 +95,7 @@ const translations: Record<Language, TranslationKeys> = {
             'Select groups of matching colors and create chain reactions! The more blocks you select, the more points you get.',
         startGame: 'Single Player',
         pvpMode: 'Player vs Player',
+        aiMode: 'vs Computer',
         singleplayer: 'Single Player',
         settings: 'Settings',
 
@@ -94,6 +105,7 @@ const translations: Record<Language, TranslationKeys> = {
         cancel: 'Cancel',
         resetGame: 'Reset Game',
         backToMenu: 'Back to Menu',
+        attack: 'Attack',
 
         // PvP
         player1: 'Player 1',
@@ -102,6 +114,9 @@ const translations: Record<Language, TranslationKeys> = {
         gameOver: 'Game Over',
         winner: 'Winner',
         hp: 'HP',
+        youWin: 'You Win!',
+        aiWins: 'AI Wins!',
+        playAgain: 'Play Again',
 
         // Settings
         settingsTitle: 'Settings',

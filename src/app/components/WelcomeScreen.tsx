@@ -201,7 +201,9 @@ export const WelcomeScreen: React.FC = () => {
             <StyledButtonContainer>
                 <StyledButton
                     $primary
-                    onClick={() => navigate('/game?mode=singleplayer')}
+                    onClick={() =>
+                        navigate('/game?mode=singleplayer')
+                    }
                 >
                     {t('singleplayer')}
                 </StyledButton>
@@ -211,6 +213,13 @@ export const WelcomeScreen: React.FC = () => {
                     onClick={() => navigate('/game?mode=pvp')}
                 >
                     {t('pvpMode')}
+                </StyledButton>
+
+                <StyledButton
+                    $primary
+                    onClick={() => navigate('/game?mode=ai')}
+                >
+                    {t('aiMode')}
                 </StyledButton>
 
                 <StyledButton onClick={() => navigate('/settings')}>

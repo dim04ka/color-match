@@ -34,7 +34,7 @@ export type ScoreMultipliers = Record<Color, number>
 
 export type Language = 'ru' | 'en'
 
-export type GameMode = 'singleplayer' | 'pvp'
+export type GameMode = 'singleplayer' | 'pvp' | 'ai'
 
 export type PlayerInfo = {
     id: 1 | 2
@@ -52,6 +52,19 @@ export type PvPGameState = GameState & {
     winner?: 1 | 2
     turnTimeLeft: number // секунды, оставшиеся до конца хода
     turnDuration: number // длительность хода в секундах (по умолчанию 60)
+}
+
+export type PvPAIGameState = GameState & {
+    mode: 'ai'
+    players: [PlayerInfo, PlayerInfo]
+    currentPlayer: 1 | 2
+    gameOver: boolean
+    winner?: 1 | 2
+    turnTimeLeft: number
+    turnDuration: number
+    isAIThinking: boolean // показывает, что ИИ обдумывает ход
+    isAISelecting: boolean // показывает, что ИИ демонстрирует свой выбор
+    aiThinkingTime: number // время размышления ИИ в миллисекундах
 }
 
 export type AppSettings = {

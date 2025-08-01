@@ -8,6 +8,7 @@ import type { GameMode } from '@shared/types/game'
 import { getTranslation } from '@shared/utils/translations'
 
 import { ColorMatchGame } from './ColorMatchGame'
+import { PvPAIColorMatchGame } from './PvPAIColorMatchGame'
 import { PvPColorMatchGame } from './PvPColorMatchGame'
 
 const StyledGameContainer = styled.div`
@@ -76,14 +77,21 @@ export const GameScreen: React.FC = () => {
     const t = (key: Parameters<typeof getTranslation>[1]) =>
         getTranslation(settings.language, key)
 
-    const gameMode: GameMode = (searchParams.get('mode') as GameMode) || 'singleplayer'
+    const gameMode: GameMode =
+        (searchParams.get('mode') as GameMode) || 'singleplayer'
 
     return (
         <StyledGameContainer>
             <StyledMenuButton onClick={() => navigate('/')}>
                 ← {t('backToMenu')}
             </StyledMenuButton>
-            {gameMode === 'pvp' ? <PvPColorMatchGame /> : <ColorMatchGame />}
+            {gameMode === 'pvp' ? (
+                <PvPColorMatchGame />
+            ) : gameMode === 'ai' ? (
+                <PvPAIColorMatchGame />
+            ) : (
+                <ColorMatchGame />
+            )}
         </StyledGameContainer>
     )
 }
