@@ -6,6 +6,8 @@ type TranslationKeys = {
     welcomeSubtitle: string
     gameDescription: string
     startGame: string
+    pvpMode: string
+    singleplayer: string
     settings: string
 
     // Game
@@ -14,6 +16,14 @@ type TranslationKeys = {
     cancel: string
     resetGame: string
     backToMenu: string
+
+    // PvP
+    player1: string
+    player2: string
+    yourTurn: string
+    gameOver: string
+    winner: string
+    hp: string
 
     // Settings
     settingsTitle: string
@@ -35,7 +45,9 @@ const translations: Record<Language, TranslationKeys> = {
         welcomeSubtitle: 'Увлекательная игра-головоломка',
         gameDescription:
             'Выделяйте группы одинаковых цветов и создавайте цепные реакции! Чем больше блоков выберете, тем больше очков получите.',
-        startGame: 'Начать игру',
+        startGame: 'Одиночная игра',
+        pvpMode: 'Игрок против игрока',
+        singleplayer: 'Одиночная игра',
         settings: 'Настройки',
 
         // Game
@@ -44,6 +56,14 @@ const translations: Record<Language, TranslationKeys> = {
         cancel: 'Отмена',
         resetGame: 'Сбросить игру',
         backToMenu: 'В меню',
+
+        // PvP
+        player1: 'Игрок 1',
+        player2: 'Игрок 2',
+        yourTurn: 'Ваш ход',
+        gameOver: 'Игра окончена',
+        winner: 'Победитель',
+        hp: 'HP',
 
         // Settings
         settingsTitle: 'Настройки',
@@ -63,7 +83,9 @@ const translations: Record<Language, TranslationKeys> = {
         welcomeSubtitle: 'Exciting Puzzle Game',
         gameDescription:
             'Select groups of matching colors and create chain reactions! The more blocks you select, the more points you get.',
-        startGame: 'Start Game',
+        startGame: 'Single Player',
+        pvpMode: 'Player vs Player',
+        singleplayer: 'Single Player',
         settings: 'Settings',
 
         // Game
@@ -72,6 +94,14 @@ const translations: Record<Language, TranslationKeys> = {
         cancel: 'Cancel',
         resetGame: 'Reset Game',
         backToMenu: 'Back to Menu',
+
+        // PvP
+        player1: 'Player 1',
+        player2: 'Player 2',
+        yourTurn: 'Your Turn',
+        gameOver: 'Game Over',
+        winner: 'Winner',
+        hp: 'HP',
 
         // Settings
         settingsTitle: 'Settings',

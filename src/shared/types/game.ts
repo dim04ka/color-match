@@ -34,6 +34,26 @@ export type ScoreMultipliers = Record<Color, number>
 
 export type Language = 'ru' | 'en'
 
+export type GameMode = 'singleplayer' | 'pvp'
+
+export type PlayerInfo = {
+    id: 1 | 2
+    name: string
+    hp: number
+    maxHp: number
+    icon: string
+}
+
+export type PvPGameState = GameState & {
+    mode: 'pvp'
+    players: [PlayerInfo, PlayerInfo]
+    currentPlayer: 1 | 2
+    gameOver: boolean
+    winner?: 1 | 2
+    turnTimeLeft: number // секунды, оставшиеся до конца хода
+    turnDuration: number // длительность хода в секундах (по умолчанию 60)
+}
+
 export type AppSettings = {
     language: Language
     soundEnabled: boolean

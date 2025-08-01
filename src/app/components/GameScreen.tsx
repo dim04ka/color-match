@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useAppContext } from '@app/contexts/AppContext'
+import type { GameMode } from '@shared/types/game'
 import { getTranslation } from '@shared/utils/translations'
 
 import { ColorMatchGame } from './ColorMatchGame'
+import { PvPColorMatchGame } from './PvPColorMatchGame'
 
 const StyledGameContainer = styled.div`
     position: relative;
@@ -69,16 +71,19 @@ const StyledMenuButton = styled.button`
 export const GameScreen: React.FC = () => {
     const navigate = useNavigate()
     const { settings } = useAppContext()
+    const [searchParams] = useSearchParams()
 
     const t = (key: Parameters<typeof getTranslation>[1]) =>
         getTranslation(settings.language, key)
+
+    const gameMode: GameMode = (searchParams.get('mode') as GameMode) || 'singleplayer'
 
     return (
         <StyledGameContainer>
             <StyledMenuButton onClick={() => navigate('/')}>
                 ← {t('backToMenu')}
             </StyledMenuButton>
-            <ColorMatchGame />
+            {gameMode === 'pvp' ? <PvPColorMatchGame /> : <ColorMatchGame />}
         </StyledGameContainer>
     )
 }
